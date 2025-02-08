@@ -1,13 +1,12 @@
 package com.demo.Gestione_prenotazione.model;
 
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
-@Table(name = "Edifici")
+@Table(name = "edifici")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,5 +22,8 @@ public class Edificio {
     private String indirizzo;
 
     @Column(nullable = false)
-    private String città;
+    private String city;
+
+    @OneToMany(mappedBy = "edificio", cascade = CascadeType.ALL)
+    private List<Postazione> postazioni;
 }

@@ -1,11 +1,10 @@
 package com.demo.Gestione_prenotazione.model;
 
-
 import com.demo.Gestione_prenotazione.enumerated.TipiPostazione;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "postazioni")
@@ -32,5 +31,8 @@ public class Postazione {
 
     @ManyToOne
     @JoinColumn(name = "edificio_id", nullable = false)
-    private Edificio edificio ;
+    private Edificio edificio;
+
+    @OneToMany(mappedBy = "postazione", cascade = CascadeType.ALL)
+    private List<Prenotazione> prenotazioni;
 }

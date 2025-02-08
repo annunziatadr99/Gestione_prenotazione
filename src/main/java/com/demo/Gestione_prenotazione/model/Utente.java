@@ -1,10 +1,9 @@
 package com.demo.Gestione_prenotazione.model;
 
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "utenti")
@@ -17,11 +16,14 @@ public class Utente {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String nome;
+    private String username;
 
     @Column(nullable = false)
-    private String cognome;
+    private String nomeCompleto;
 
     @Column(nullable = false, unique = true)
     private String email;
+
+    @OneToMany(mappedBy = "utente", cascade = CascadeType.ALL)
+    private List<Prenotazione> prenotazioni;
 }
