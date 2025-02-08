@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Edificio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +22,9 @@ public class Edificio {
     @Column(nullable = false)
     private String indirizzo;
 
-    @Column(nullable = false)
+    @Column(name = "city", nullable = false)
     private String city;
+
 
     @OneToMany(mappedBy = "edificio", cascade = CascadeType.ALL)
     private List<Postazione> postazioni;
