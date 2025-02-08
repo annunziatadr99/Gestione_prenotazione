@@ -28,7 +28,7 @@ public class Postazione {
     private TipiPostazione tipiPostazione;
 
     @Column(nullable = false)
-    private int maxOccupants;
+    private int maxOccupanti;
 
     @ManyToOne
     @JoinColumn(name = "edificio_id", nullable = false)
