@@ -1,6 +1,8 @@
 package com.demo.Gestione_prenotazione.runner;
 
 import com.demo.Gestione_prenotazione.enumerated.TipiPostazione;
+import com.demo.Gestione_prenotazione.exception.*;
+import com.demo.Gestione_prenotazione.model.Edificio;
 import com.demo.Gestione_prenotazione.model.Postazione;
 import com.demo.Gestione_prenotazione.model.Prenotazione;
 import com.demo.Gestione_prenotazione.model.Utente;
@@ -87,6 +89,10 @@ public class MenuInterattivo implements CommandLineRunner {
         System.out.print("Inserisci email: ");
         String email = scanner.nextLine();
 
+        if (username.isEmpty() || nomeCompleto.isEmpty() || email.isEmpty()) {
+            throw new DatiNonValidiException("I dati inseriti non sono validi. Tutti i campi sono obbligatori.");
+        }
+
         Utente utente = new Utente(null, username, nomeCompleto, email, null);
         utenteService.saveUtente(utente);
 
@@ -96,7 +102,12 @@ public class MenuInterattivo implements CommandLineRunner {
     private void ricercaPostazioni(Scanner scanner) {
         System.out.print("Inserisci tipo di postazione (PRIVATO, OPENSPACE, SALA_RIUNIONI): ");
         String tipoInput = scanner.nextLine();
-        TipiPostazione tipo = TipiPostazione.valueOf(tipoInput.toUpperCase());
+        TipiPostazione tipo;
+        try {
+            tipo = TipiPostazione.valueOf(tipoInput.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new DatiNonValidiException("Tipo di postazione non valido.");
+        }
 
         System.out.print("Inserisci città: ");
         String citta = scanner.nextLine();
@@ -110,20 +121,24 @@ public class MenuInterattivo implements CommandLineRunner {
         }
     }
 
-    private void effettuaPrenotazione(Scanner scanner) throws Exception {
+    private void effettuaPrenotazione(Scanner scanner) {
         System.out.print("Inserisci username utente: ");
         String username = scanner.nextLine();
-        Utente utente = utenteService.findByUsername(username);
-        if (utente == null) {
-            System.out.println("Utente non trovato.");
+        Utente utente = null;
+        try {
+            utente = utenteService.findByUsername(username);
+        } catch (UtenteNonTrovatoException e) {
+            System.out.println(e.getMessage());
             return;
         }
 
         System.out.print("Inserisci codice postazione: ");
         String codicePostazione = scanner.nextLine();
-        Postazione postazione = postazioneService.findByCodice(codicePostazione);
-        if (postazione == null) {
-            System.out.println("Postazione non trovata.");
+        Postazione postazione = null;
+        try {
+            postazione = postazioneService.findByCodice(codicePostazione);
+        } catch (PostazioneNonTrovataException e) {
+            System.out.println(e.getMessage());
             return;
         }
 
@@ -132,9 +147,12 @@ public class MenuInterattivo implements CommandLineRunner {
         LocalDate data = LocalDate.parse(dataInput);
 
         Prenotazione prenotazione = new Prenotazione(null, postazione, utente, data);
-        prenotazioneService.savePrenotazione(prenotazione);
-
-        System.out.println("Prenotazione effettuata con successo!");
+        try {
+            prenotazioneService.savePrenotazione(prenotazione);
+            System.out.println("Prenotazione effettuata con successo!");
+        } catch (PrenotazioneNonPermessaException | PostazioneOccupataException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void visualizzaPrenotazioni() {
@@ -151,4 +169,3 @@ public class MenuInterattivo implements CommandLineRunner {
         }
     }
 }
-

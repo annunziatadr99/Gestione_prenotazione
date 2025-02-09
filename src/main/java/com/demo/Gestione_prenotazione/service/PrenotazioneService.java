@@ -1,5 +1,7 @@
 package com.demo.Gestione_prenotazione.service;
 
+import com.demo.Gestione_prenotazione.exception.PostazioneOccupataException;
+import com.demo.Gestione_prenotazione.exception.PrenotazioneNonPermessaException;
 import com.demo.Gestione_prenotazione.model.Postazione;
 import com.demo.Gestione_prenotazione.model.Prenotazione;
 import com.demo.Gestione_prenotazione.model.Utente;
@@ -17,16 +19,17 @@ public class PrenotazioneService {
         this.prenotazioneDAORepository = prenotazioneDAORepository;
     }
 
-    public Prenotazione savePrenotazione(Prenotazione prenotazione) throws Exception {
-
+    public Prenotazione savePrenotazione(Prenotazione prenotazione) throws PrenotazioneNonPermessaException, PostazioneOccupataException {
+        // Controlla se l'utente ha già una prenotazione per la stessa data
         List<Prenotazione> prenotazioniUtente = prenotazioneDAORepository.findByUtenteAndData(prenotazione.getUtente(), prenotazione.getData());
         if (!prenotazioniUtente.isEmpty()) {
-            throw new Exception("L'utente ha già una prenotazione per questa data.");
+            throw new PrenotazioneNonPermessaException("L'utente ha già una prenotazione per questa data.");
         }
 
+        // Controlla se la postazione è già prenotata per la stessa data
         List<Prenotazione> prenotazioniPostazione = prenotazioneDAORepository.findByPostazioneAndData(prenotazione.getPostazione(), prenotazione.getData());
         if (!prenotazioniPostazione.isEmpty()) {
-            throw new Exception("La postazione è già prenotata per questa data.");
+            throw new PostazioneOccupataException("La postazione è già prenotata per questa data.");
         }
 
         return prenotazioneDAORepository.save(prenotazione);

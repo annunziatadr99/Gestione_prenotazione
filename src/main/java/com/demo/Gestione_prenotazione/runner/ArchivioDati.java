@@ -1,4 +1,4 @@
-package com.demo.Gestione_prenotazione.runner;
+/*package com.demo.Gestione_prenotazione.runner;
 
 import com.demo.Gestione_prenotazione.enumerated.TipiPostazione;
 import com.demo.Gestione_prenotazione.model.Edificio;
@@ -76,4 +76,4 @@ public class ArchivioDati implements CommandLineRunner {
 
         System.out.println("Dati inizializzati con successo!");
     }
-}
+}*/

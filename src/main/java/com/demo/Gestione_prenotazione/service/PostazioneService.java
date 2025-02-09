@@ -1,10 +1,10 @@
 package com.demo.Gestione_prenotazione.service;
 
+import com.demo.Gestione_prenotazione.exception.PostazioneNonTrovataException;
 import com.demo.Gestione_prenotazione.enumerated.TipiPostazione;
 import com.demo.Gestione_prenotazione.model.Postazione;
 import com.demo.Gestione_prenotazione.repository.PostazioneDAORepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -27,7 +27,12 @@ public class PostazioneService {
     public List<Postazione> findPostazioniByTipoAndCitta(TipiPostazione tipiPostazione, String city) {
         return postazioneDAORepository.findByTipiPostazioneAndEdificio_City(tipiPostazione, city);
     }
+
     public Postazione findByCodice(String codice) {
-        return postazioneDAORepository.findByCodice(codice);
+        Postazione postazione = postazioneDAORepository.findByCodice(codice);
+        if (postazione == null) {
+            throw new PostazioneNonTrovataException("Postazione non trovata: " + codice);
+        }
+        return postazione;
     }
 }
