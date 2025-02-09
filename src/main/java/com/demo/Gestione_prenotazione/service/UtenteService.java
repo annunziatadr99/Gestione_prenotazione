@@ -22,4 +22,7 @@ public class UtenteService {
     public List<Utente> getAllUtenti() {
         return utenteDAORepository.findAll();
     }
+    public Utente findByUsername(String username) {
+        return utenteDAORepository.findByUsername(username);
+    }
 }

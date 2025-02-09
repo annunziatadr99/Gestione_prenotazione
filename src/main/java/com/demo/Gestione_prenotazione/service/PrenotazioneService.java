@@ -5,7 +5,6 @@ import com.demo.Gestione_prenotazione.model.Prenotazione;
 import com.demo.Gestione_prenotazione.model.Utente;
 import com.demo.Gestione_prenotazione.repository.PrenotazioneDAORepository;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,7 +23,6 @@ public class PrenotazioneService {
         if (!prenotazioniUtente.isEmpty()) {
             throw new Exception("L'utente ha già una prenotazione per questa data.");
         }
-
 
         List<Prenotazione> prenotazioniPostazione = prenotazioneDAORepository.findByPostazioneAndData(prenotazione.getPostazione(), prenotazione.getData());
         if (!prenotazioniPostazione.isEmpty()) {

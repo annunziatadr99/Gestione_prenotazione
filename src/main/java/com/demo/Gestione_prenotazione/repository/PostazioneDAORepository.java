@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface PostazioneDAORepository extends JpaRepository<Postazione, Long> {
     List<Postazione> findByTipiPostazioneAndEdificio_City(TipiPostazione tipiPostazione, String city);
+    Postazione findByCodice(String codice);
 }
-

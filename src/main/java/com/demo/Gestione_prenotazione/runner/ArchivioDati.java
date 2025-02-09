@@ -10,6 +10,7 @@ import com.demo.Gestione_prenotazione.service.PostazioneService;
 import com.demo.Gestione_prenotazione.service.PrenotazioneService;
 import com.demo.Gestione_prenotazione.service.UtenteService;
 import org.springframework.boot.CommandLineRunner;
+
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;

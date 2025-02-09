@@ -27,4 +27,7 @@ public class PostazioneService {
     public List<Postazione> findPostazioniByTipoAndCitta(TipiPostazione tipiPostazione, String city) {
         return postazioneDAORepository.findByTipiPostazioneAndEdificio_City(tipiPostazione, city);
     }
+    public Postazione findByCodice(String codice) {
+        return postazioneDAORepository.findByCodice(codice);
+    }
 }
